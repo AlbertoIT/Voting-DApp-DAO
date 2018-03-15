@@ -11,7 +11,6 @@ contract Token {
 
 contract CheckTokenBalance {
   Token myToken;
-  uint balance;
     function CheckTokenBalance(address addressToken) {
         myToken = Token(addressToken);
     }
