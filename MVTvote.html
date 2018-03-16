@@ -1,0 +1,140 @@
+<html>
+  <head>
+      <meta charset="UTF-8">
+      <title>The Movement - Voting Page</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
+      <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css'>
+      <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+  <div id="meta-mask-required"></div>
+
+      <div class="greenform">
+          
+              <div class="greenform-header">
+                  <img src="img/greenpoint-vr.png" class="responsive">
+              </div>
+              <div class="greenform-main">
+                  <button class="button" onclick="sendVote()">Vote</button>
+                  <div class="input-block">
+                      <div class="label">Proposal id:</div>
+                      <div class="input-control">
+                          <input name="proposalid" type="text" class="required" autocomplete="off">
+                      </div>
+                  </div>
+                  <button class="button" onclick="getVotes()">Show Votes</button>
+                  <button class="button" onclick="votersCount()">Total Votes</button>
+                  <hr>
+                  <button class="button" onclick="deployVoteContract()">Deploy New Vote</button>
+                  <div class="input-block">
+                      <div class="label"> End Block:</div>
+                      <div class="input-control">
+                          <input name="endBlock" type="text" class="required" autocomplete="off">
+                      </div>
+
+                      <div class="label">Min amount of MVT to vote:</div>
+                      <div class="input-control">
+                          <input name="tokenAmount" type="text" class="required" autocomplete="off">
+                      </div>
+
+                      <div class="label">Description of the Vote:</div>
+                      <div class="input-control">
+                          <input name="urlVote" type="text" class="required" autocomplete="off">
+                      </div>
+
+                      <div id="response"></div>
+                      <div id="result"></div>
+                  </div>
+              </div>
+        
+</div>    
+  <script>
+      var voteSCAddress = '0x83e3fdea8571e9ee8cda2c7275645ca131dfc18f';
+      var abiVote = [{"constant":true,"inputs":[],"name":"endBlock","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"unVote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"proposalId","type":"int256"}],"name":"vote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_endBlock","type":"uint256"}],"name":"changeEndBlock","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"offset","type":"uint256"},{"name":"limit","type":"uint256"}],"name":"getVoters","outputs":[{"name":"_voters","type":"address[]"},{"name":"_proposalIds","type":"int256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"votersCount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"votes","outputs":[{"name":"","type":"int256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"voters","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"admin","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"voteUrlInfo","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_endBlock","type":"uint256"},{"name":"_minTokenAmountToVote","type":"uint256"},{"name":"_urlVotingDetails","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"voter","type":"address"},{"indexed":true,"name":"proposalId","type":"int256"}],"name":"onVote","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"voter","type":"address"},{"indexed":true,"name":"proposalId","type":"int256"}],"name":"onUnVote","type":"event"}];    
+      
+
+    // MetaMask injects the web3 library for us.
+    window.onload = function() {
+      if (typeof web3 === 'undefined') {
+        document.getElementById('meta-mask-required').innerHTML = 'You need <a href="https://metamask.io/">MetaMask</a> browser plugin to run this example'
+      }
+    }
+    
+    /* 
+    function votersCount()    
+    function voteUrlInfo()    
+    function getVoters(0,100)
+    */
+
+	function sendVote() {
+        
+        var voteSC = web3.eth.contract(abiVote).at(voteSCAddress);
+        
+        console.log('Calling the smart contract');
+       
+        voteSC.vote(document.getElementById("proposalid").value, function (error, result) {
+            if (!error)
+                document.getElementById('response').innerHTML = 'Success:' + result 
+            else
+                console.error(error);
+        });           
+	}
+
+	function getVotes() {
+
+	    var voteSC = web3.eth.contract(abiVote).at(voteSCAddress);
+
+	    console.log('Calling the smart contract');
+
+	    voteSC.getVoters(0, 1000, function (error, result) {
+	        if (!error)
+	            document.getElementById('response').innerHTML = 'Success:' + result
+	        else
+	            console.error(error);
+	    });
+	}
+
+	function votersCount() {
+
+	    var voteSC = web3.eth.contract(abiVote).at(voteSCAddress);
+
+	    console.log('Calling the smart contract');
+
+	    voteSC.votersCount(function (error, result) {
+	        if (!error)
+	            document.getElementById('response').innerHTML = 'Success:' + result
+	        else
+	            console.error(error);
+	    });
+	}
+	
+	function deployVoteContract(){
+	var _endBlock = 44444444444 ;
+	var _minTokenAmountToVote = 100 ;
+	var _urlVotingDetails = "my_url" ;
+	var movementvotingContract = web3.eth.contract([{"constant":true,"inputs":[],"name":"endBlock","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"unVote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"proposalId","type":"int256"}],"name":"vote","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_endBlock","type":"uint256"}],"name":"changeEndBlock","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"offset","type":"uint256"},{"name":"limit","type":"uint256"}],"name":"getVoters","outputs":[{"name":"_voters","type":"address[]"},{"name":"_proposalIds","type":"int256[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"votersCount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"votes","outputs":[{"name":"","type":"int256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"voters","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"admin","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"voteUrlInfo","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_endBlock","type":"uint256"},{"name":"_minTokenAmountToVote","type":"uint256"},{"name":"_urlVotingDetails","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"voter","type":"address"},{"indexed":true,"name":"proposalId","type":"int256"}],"name":"onVote","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"voter","type":"address"},{"indexed":true,"name":"proposalId","type":"int256"}],"name":"onUnVote","type":"event"}]);
+	var movementvoting = movementvotingContract.new(
+	   _endBlock,
+	   _minTokenAmountToVote,
+	   _urlVotingDetails,
+	   {
+		 from: web3.eth.accounts[0], 
+		 data: '0x60606040526064600555341561001457600080fd5b604051610da9380380610da9833981016040528080519060200190919080519060200190919080518201919050508260028190555033600360006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055508160058190555080600690805190602001906100a7929190610105565b507389eebb3ca5085ea737cc193b4a5d5b2b837ce548600460006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505050506101aa565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061014657805160ff1916838001178555610174565b82800160010185558215610174579182015b82811115610173578251825591602001919060010190610158565b5b5090506101819190610185565b5090565b6101a791905b808211156101a357600081600090555060010161018b565b5090565b90565b610bf0806101b96000396000f3006060604052600436106100a4576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063083c6323146100a95780632c70d64e146100d25780633891c320146100e7578063822226741461010a5780638884b8071461012d57806398c07938146101f6578063d8bff5a51461021f578063da58c7d91461026c578063f851a440146102cf578063ffd005aa14610324575b600080fd5b34156100b457600080fd5b6100bc6103b2565b6040518082815260200191505060405180910390f35b34156100dd57600080fd5b6100e56103b8565b005b34156100f257600080fd5b610108600480803590602001909190505061052d565b005b341561011557600080fd5b61012b60048080359060200190919050506107c7565b005b341561013857600080fd5b610157600480803590602001909190803590602001909190505061082d565b604051808060200180602001838103835285818151815260200191508051906020019060200280838360005b8381101561019e578082015181840152602081019050610183565b50505050905001838103825284818151815260200191508051906020019060200280838360005b838110156101e05780820151818401526020810190506101c5565b5050505090500194505050505060405180910390f35b341561020157600080fd5b610209610a05565b6040518082815260200191505060405180910390f35b341561022a57600080fd5b610256600480803573ffffffffffffffffffffffffffffffffffffffff16906020019091905050610a12565b6040518082815260200191505060405180910390f35b341561027757600080fd5b61028d6004808035906020019091905050610a2a565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34156102da57600080fd5b6102e2610a69565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561032f57600080fd5b610337610a8f565b6040518080602001828103825283818151815260200191508051906020019080838360005b8381101561037757808201518184015260208101905061035c565b50505050905090810190601f1680156103a45780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b60025481565b60008073ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141515156103f557600080fd5b60008060003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205413151561044257600080fd5b6000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205490507fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff6000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002081905550803373ffffffffffffffffffffffffffffffffffffffff167f8899fa0d9f7c3624e2c1eb5047970114cb932903ee9b02cb348b28c9d7ff6c8760405160405180910390a350565b6000670de0b6b3a7640000600460009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166370a08231336040518263ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001915050602060405180830381600087803b15156105f457600080fd5b5af1151561060157600080fd5b5050506040518051905081151561061457fe5b049050600554811015151561062857600080fd5b600073ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415151561066457600080fd5b60008213151561067357600080fd5b6000600254148061068657506002544311155b151561069157600080fd5b60008060003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002054141561073c57600180548060010182816106ec9190610b37565b9160005260206000209001600033909190916101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550505b816000803373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002081905550813373ffffffffffffffffffffffffffffffffffffffff167f1fc242b9e0bd86dfa3afb1f32472da3e0a4fd22860614f124be2ba1aa3e45e0760405160405180910390a35050565b600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561082357600080fd5b8060028190555050565b610835610b63565b61083d610b77565b60008060006001805490508710156109fa5785925060009150858760018054905003101561087057866001805490500392505b8260405180591061087e5750595b908082528060200260200182016040525094508260405180591061089f5750595b908082528060200260200182016040525093508690505b8287018110156109ef576001818154811015156108cf57fe5b906000526020600020900160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16858381518110151561090957fe5b9060200190602002019073ffffffffffffffffffffffffffffffffffffffff16908173ffffffffffffffffffffffffffffffffffffffff168152505060008060018381548110151561095757fe5b906000526020600020900160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020016000205484838151811015156109cc57fe5b9060200190602002018181525050818060010192505080806001019150506108b6565b8484945094506109fb565b5b5050509250929050565b6000600180549050905090565b60006020528060005260406000206000915090505481565b600181815481101515610a3957fe5b90600052602060002090016000915054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b610a97610b8b565b60068054600181600116156101000203166002900480601f016020809104026020016040519081016040528092919081815260200182805460018160011615610100020316600290048015610b2d5780601f10610b0257610100808354040283529160200191610b2d565b820191906000526020600020905b815481529060010190602001808311610b1057829003601f168201915b5050505050905090565b815481835581811511610b5e57818360005260206000209182019101610b5d9190610b9f565b5b505050565b602060405190810160405280600081525090565b602060405190810160405280600081525090565b602060405190810160405280600081525090565b610bc191905b80821115610bbd576000816000905550600101610ba5565b5090565b905600a165627a7a72305820797607ab37a3aff8ade4eaaf2adf2c58b47fc722ce8dc41144a36038d8e719d50029', 
+		 gas: '4700000'
+	   }, function (e, contract){
+		console.log(e, contract);
+		if (typeof contract.address !== 'undefined') {
+		    console.log('Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash);
+		    document.getElementById('response').innerHTML = 'Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash
+		}
+	 })	
+	}
+	
+  </script>
+
+      <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.min.js'></script>
+      <script src="js/index.js"></script>
+  </body>
+</html>

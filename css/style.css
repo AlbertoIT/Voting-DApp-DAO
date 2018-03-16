@@ -1,0 +1,227 @@
+body {
+  background: #ffffff;
+  color: #000000;
+}
+
+.button {
+  border: 1px solid #808080;
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 20px;
+  position: relative;
+  text-align: left;
+  border-radius: 3px;
+  -webkit-transition: background 600ms ease, color 600ms ease;
+  transition: background 600ms ease, color 600ms ease;
+}
+.button span {
+  border: 1px solid #fff;
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 12px;
+  border-radius: 5px;
+  vertical-align: middle;
+  text-align: center;
+  margin-top: -5px;
+}
+
+.submitbutton {
+  border: 1px solid #808080;
+  color: #555;
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 30px;
+  position: relative;
+  text-align: left;
+  border-radius: 3px;
+  -webkit-transition: background 600ms ease, color 600ms ease;
+  transition: background 600ms ease, color 600ms ease;
+}
+
+
+.submitbutton:hover {
+  border: 1px solid #222;
+  background-color: #e8e8e8;
+}
+
+.submitbutton:active {
+  border: 1px solid #555;
+  background-color: #888;
+}
+
+
+.button:hover {
+  color: #fff;
+  background-color: #000;
+}
+
+
+
+input[type="radio"].toggle {
+  display: none;
+}
+input[type="radio"].toggle + label {
+  cursor: pointer;
+  min-width: 80px;
+}
+input[type="radio"].toggle + label:hover {
+  background: none;
+  background-color: #fff;
+  border-color: #000;
+  color: #97cd61;
+}
+input[type="radio"].toggle + label:after {
+  content: "";
+  height: 100%;
+  position: absolute;
+  top: 0;
+  -webkit-transition: left 100ms cubic-bezier(0.77, 0, 0.175, 1);
+  transition: left 100ms cubic-bezier(0.77, 0, 0.175, 1);
+  width: 100%;
+  z-index: -1;
+}
+input[type="radio"].toggle.toggle-left + label {
+}
+input[type="radio"].toggle.toggle-left + label:after {
+  left: 100%;
+}
+input[type="radio"].toggle.toggle-right + label {
+  margin-left: 10px;
+}
+input[type="radio"].toggle.toggle-right + label:after {
+  left: -100%;
+}
+input[type="radio"].toggle:checked + label {
+  background: #97cd61;
+  cursor: default;
+  color: #fff;
+  border-color: #111;
+}
+input[type="radio"].toggle:checked + label:after {
+  left: 0;
+}
+
+.greenform input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #B2CF32 !important;
+}
+
+.greenform button:focus {
+  outline: none;
+  border-color: #333 !important;
+  color: #fff;
+}
+
+.greenform input, select, textarea {
+  background-color: #DCEB95 !important;
+  color: #fff;
+}
+
+.greenform {
+  font-family: 'Karla', sans-serif;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  max-width: 800px;
+  margin: 300px auto;
+  margin-bottom: 400px;
+  padding: 0 20px;
+}
+
+.newera {
+  font-family: 'Karla', sans-serif;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.greenform-mobile {
+  font-family: 'Karla', sans-serif;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  margin: 50px;
+  padding-top: 20px;
+}
+
+
+
+.greenform .greenform-header {
+  padding-bottom: 10px;
+}
+
+
+.greenform .greenform-main {
+}
+.greenform .greenform-main .input-block {
+  padding: 30px 0;
+  opacity: 0.25;
+  cursor: default;
+}
+.greenform .greenform-main .input-block .label {
+  display: block;
+  font-size: 1.3em;
+  line-height: 30px;
+}
+.greenform .greenform-main .input-block .input-control {
+  margin: 20px 0;
+}
+.greenform .greenform-main .input-block .input-control input[type=text] {
+  border: none;
+  outline-width: 0;
+  border-bottom: 1px solid #B7CF49;
+  width: 100%;
+  font-size: 30px;
+  padding-bottom: 3px;
+  padding-left: 10px;
+  color: #222;
+}
+
+.greenform .greenform-main .input-block.active {
+  opacity: 1;
+}
+
+.greenform .greenform-footer {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.greenform .greenform-footer .submitbutton {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 5px 20px;
+  color: #000;
+  margin-bottom: 100px;
+}
+.responsive {
+    width: 100%;
+    height: auto;
+}
+.thanks {
+  font-size: 30px;
+  padding-top: 20px;
+}
+.thanks-small {
+  font-size: 20px;
+  text-align: center;
+  padding-top: 50px;
+}
+.mobile-small {
+  font-size: 20px;
+  text-align: center;
+  padding: 50px;
+}
+
+#links {
+  padding-top: 50px;
+  text-align: center;
+  opacity: 0.2;
+}
+#links img {
+  width: 30px;
+  margin: 5px;
+}
