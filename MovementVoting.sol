@@ -5,22 +5,8 @@
   
 pragma solidity ^0.4.18;
 
-contract Token {
+contract MVT {
     function balanceOf(address addr) returns (uint);
-}
-
-contract CheckTokenBalance {
-  Token myToken;
-    function CheckTokenBalance(address addressToken) {
-        myToken = Token(addressToken);
-    }
-  function setToken(address tokenAddress) {
-    myToken = Token(tokenAddress);
-  }
-
-  function getTokenBalanceOf(address owner) constant returns (uint) {
-    return myToken.balanceOf(owner)/(10 ** 18);
-  }
 }
 
 contract MovementVoting {
@@ -29,19 +15,19 @@ contract MovementVoting {
     uint256 public endBlock;
 	address public admin;
 	
-	uint minTokenAmountToVote=400;
-	//string urlVotingDetails;
-	CheckTokenBalance checker;
+	MVT token;
+	uint minTokenAmountToVote=100;
+	string urlVotingDetails;
 	
     event onVote(address indexed voter, int256 indexed proposalId);
     event onUnVote(address indexed voter, int256 indexed proposalId);
 
-    function MovementVoting(uint256 _endBlock){ //, uint _minTokenAmountToVote, string _urlVotingDetails) {
+    function MovementVoting(uint256 _endBlock, uint _minTokenAmountToVote, string _urlVotingDetails) {
         endBlock = _endBlock;
 		admin = msg.sender;
-		//minTokenAmountToVote =_minTokenAmountToVote;
-		//urlVotingDetails = _urlVotingDetails;
-		checker = CheckTokenBalance(0x89eebb3ca5085ea737cc193b4a5d5b2b837ce548);
+		minTokenAmountToVote =_minTokenAmountToVote;
+		urlVotingDetails = _urlVotingDetails;
+		token = MVT(0x89eebb3ca5085ea737cc193b4a5d5b2b837ce548);
     }
 
 	function changeEndBlock(uint256 _endBlock)
@@ -50,8 +36,10 @@ contract MovementVoting {
 	}
 
     function vote(int256 proposalId) {
-        uint bala = checker.getTokenBalanceOf(msg.sender);
-        //require(checker.getTokenBalanceOf(msg.sender) >= minTokenAmountToVote);
+        
+        uint balance = token.balanceOf(msg.sender)/(10 ** 18);
+        
+        require(balance >= minTokenAmountToVote);
         require(msg.sender != address(0));
         require(proposalId > 0);
         require(endBlock == 0 || block.number <= endBlock);
@@ -79,11 +67,11 @@ contract MovementVoting {
         return voters.length;
     }
     
-    /*function voteInfo()
+    function voteUrlInfo()
     constant
     returns(string) {
         return urlVotingDetails;
-    }*/
+    }
 
     function getVoters(uint256 offset, uint256 limit)
     constant
