@@ -20,11 +20,12 @@
                   <div class="input-block">
                       <div class="label">Proposal id:</div>
                       <div class="input-control">
-                          <input name="proposalid" type="text" class="required" autocomplete="off">
+                          <input id="proposalid" type="text" class="required" autocomplete="off">
                       </div>
                   </div>
                   <button class="button" onclick="getVotes()">Show Votes</button>
                   <button class="button" onclick="votersCount()">Total Votes</button>
+		  <div id="vote-response"></div>
                   <hr>
                   <button class="button" onclick="deployVoteContract()">Deploy New Vote</button>
                   <div class="input-block">
@@ -43,8 +44,8 @@
                           <input name="urlVote" type="text" class="required" autocomplete="off">
                       </div>
 
-                      <div name="response"></div>
-                      <div name="result"></div>
+                      <div id="response"></div>
+                      <div id="result"></div>
                   </div>
               </div>
         
@@ -57,7 +58,7 @@
     // MetaMask injects the web3 library for us.
     window.onload = function() {
       if (typeof web3 === 'undefined') {
-        document.getElementByName('meta-mask-required').innerHTML = 'You need <a href="https://metamask.io/">MetaMask</a> browser plugin to run this example'
+        document.getElementById('response').innerHTML = 'You need <a href="https://metamask.io/">MetaMask</a> browser plugin to run this example'
       }
     }
     
@@ -73,9 +74,9 @@
         
         console.log('Calling the smart contract');
        
-        voteSC.vote(document.getElementByName("proposalid").value, function (error, result) {
+        voteSC.vote(document.getElementById("proposalid").value, function (error, result) {
             if (!error)
-                document.getElementByName('response').innerHTML = 'Success:' + result 
+                document.getElementById('vote-response').innerHTML = 'Success:' + result 
             else
                 console.error(error);
         });           
@@ -89,7 +90,7 @@
 
 	    voteSC.getVoters(0, 1000, function (error, result) {
 	        if (!error)
-	            document.getElementByName('response').innerHTML = 'Success:' + result
+	            document.getElementById('vote-response').innerHTML = 'Success:' + result
 	        else
 	            console.error(error);
 	    });
@@ -103,7 +104,7 @@
 
 	    voteSC.votersCount(function (error, result) {
 	        if (!error)
-	            document.getElementByName('response').innerHTML = 'Success:' + result
+	            document.getElementById('vote-response').innerHTML = 'Success:' + result
 	        else
 	            console.error(error);
 	    });
@@ -126,7 +127,7 @@
 		console.log(e, contract);
 		if (typeof contract.address !== 'undefined') {
 		    console.log('Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash);
-		    document.getElementByName('response').innerHTML = 'Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash
+		    document.getElementById('response').innerHTML = 'Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash
 		}
 	 })	
 	}
